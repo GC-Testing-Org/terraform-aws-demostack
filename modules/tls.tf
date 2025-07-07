@@ -35,7 +35,7 @@ resource "tls_private_key" "server" {
 
 # Server signing request
 resource "tls_cert_request" "server" {
-  count           = var.servers
+  count = var.servers
   #key_algorithm   = element(tls_private_key.server.*.algorithm, count.index)
   private_key_pem = element(tls_private_key.server.*.private_key_pem, count.index)
 
@@ -83,8 +83,8 @@ resource "tls_cert_request" "server" {
 
 # Server certificate
 resource "tls_locally_signed_cert" "server" {
-  count              = var.servers
-  cert_request_pem   = element(tls_cert_request.server.*.cert_request_pem, count.index)
+  count            = var.servers
+  cert_request_pem = element(tls_cert_request.server.*.cert_request_pem, count.index)
   #ca_key_algorithm   = var.ca_key_algorithm
   ca_private_key_pem = tls_self_signed_cert.root.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.root.cert_pem
@@ -116,7 +116,7 @@ resource "tls_private_key" "workers" {
 
 # Client signing request
 resource "tls_cert_request" "workers" {
-  count           = var.workers
+  count = var.workers
   #key_algorithm   = element(tls_private_key.workers.*.algorithm, count.index)
   private_key_pem = element(tls_private_key.workers.*.private_key_pem, count.index)
 
