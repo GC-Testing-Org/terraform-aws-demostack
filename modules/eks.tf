@@ -43,6 +43,7 @@ resource "aws_eks_cluster" "eks" {
     aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.eks-AmazonEKSServicePolicy,
   ]
+  enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 }
 
 # EKS Worker Nodes Resources
@@ -89,8 +90,8 @@ resource "aws_eks_node_group" "eks-node" {
   node_group_name = "demostack"
   node_role_arn   = aws_iam_role.eks-node.arn
   subnet_ids      = aws_subnet.demostack.*.id
-  instance_types  =  [var.instance_type_worker]
-  ami_type       = "AL2_ARM_64"
+  instance_types  = [var.instance_type_worker]
+  ami_type        = "AL2_ARM_64"
 
   scaling_config {
     desired_size = 3
